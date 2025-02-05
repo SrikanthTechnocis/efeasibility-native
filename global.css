@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.input {
+  @apply border rounded border-blue-600 p-4 mt-2;
+}
+
+.label {
+  @apply font-semibold text-lg;
+}
