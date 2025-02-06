@@ -1,9 +1,7 @@
-import React from "react";
 import SelectRoleComponent from "../components/SelectRoleComponent";
 import AuthGuard from "../guards/AuthGuard";
-import DashboardCompnent from "../components/dashboardComponent";
 
-const IndexPage = () => {
+const RoleSelection = () => {
   return (
     <AuthGuard>
       <SelectRoleComponent />
@@ -11,4 +9,4 @@ const IndexPage = () => {
   );
 };
 
-export default IndexPage;
+export default RoleSelection;

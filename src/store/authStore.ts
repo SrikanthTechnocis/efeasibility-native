@@ -7,6 +7,7 @@ interface AUTHSTORE {
   login: (data: any) => Promise<any>;
   getUserRoles: (data: any) => Promise<any>;
   getUserFromLocalStorage: () => Promise<any>;
+  getUserRoleFromLocalStorage: () => Promise<any>;
   getTokenLocalStorage: () => Promise<any>;
 }
 
@@ -15,6 +16,7 @@ const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 export const authStore = create<AUTHSTORE>((set) => ({
   login: async (data: any) => {
     console.log("--Login Data : ", data);
+    console.log(`${apiUrl}/auth/login`);
 
     try {
       const res = await axios.post(`${apiUrl}/auth/login`, data, {
@@ -23,7 +25,7 @@ export const authStore = create<AUTHSTORE>((set) => ({
           "Access-Control-Allow-Origin": "*",
         },
       });
-      // console.log("--Login Response : ", res.data);
+      console.log("--Login Response : ", res.data);
       return res.data;
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
@@ -48,6 +50,15 @@ export const authStore = create<AUTHSTORE>((set) => ({
     return user;
   },
 
+  getUserRoleFromLocalStorage: async () => {
+    const user = await AsyncStorage.getItem("selectedRole");
+    // console.log("--User from Local Storage : ", user);
+    if (!user) {
+      console.log("--User Role not found in Local Storage--");
+      return null;
+    }
+    return user;
+  },
   getTokenLocalStorage: async () => {
     const token = await AsyncStorage.getItem("basicauth");
     console.log("--Token from Local Storage : ", token);

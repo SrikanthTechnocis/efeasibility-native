@@ -59,16 +59,21 @@ const SelectRoleComponent = () => {
     console.log("--Selected role User Details : ", userDetails);
 
     AsyncStorage.setItem("user", JSON.stringify(userDetails));
-
-    router.push("/select-project");
+    let roleData = {
+      roleId: selectedRole,
+      roleName: selectedRoleName,
+    };
+    AsyncStorage.setItem("selectedRole", JSON.stringify(roleData));
+    router.push("/dashboard");
   };
 
   // Fetch user on mount
   useEffect(() => {
     getUserFromLocalStorage().then((data: any) => {
       const user = JSON.parse(data);
+      console.log("select-role-user", user);
       setUserData(user);
-      getRoles(user.username);
+      getRoles(user.username ? user.username : user.userName);
     });
   }, []);
 
@@ -154,16 +159,16 @@ const SelectRoleComponent = () => {
             </View>
 
             {/* <Button
-                title="Clear Storage"
-                onPress={async () => {
-                  await AsyncStorage.clear();
-                  Alert.alert(
-                    "Storage Cleared",
-                    "AsyncStorage has been cleared."
-                  );
-                  router.push("/");
-                }}
-              /> */}
+              title="Clear Storage"
+              onPress={async () => {
+                await AsyncStorage.clear();
+                Alert.alert(
+                  "Storage Cleared",
+                  "AsyncStorage has been cleared."
+                );
+                router.push("/");
+              }}
+            /> */}
           </View>
 
           <StatusBar style="auto" />
