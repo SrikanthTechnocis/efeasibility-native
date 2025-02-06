@@ -39,6 +39,11 @@ const SelectRoleComponent = () => {
     });
   };
 
+  const handleBack = () => {
+    AsyncStorage.clear();
+    router.push("/login");
+  };
+
   const handleSelectedRole = async () => {
     if (!selectedRole) {
       Alert.alert("Alert", "Please Select Role");
@@ -139,9 +144,7 @@ const SelectRoleComponent = () => {
               <View className="flex flex-row items-center justify-evenly pt-5 ">
                 <Pressable
                   className="w-5/12 p-3 rounded bg-blue-600"
-                  onPress={() => {
-                    router.back();
-                  }}
+                  onPress={handleBack}
                 >
                   <Text className="text-center text-white font-semibold">
                     Cancel

@@ -34,10 +34,10 @@ const HeaderComponent = () => {
   }, []);
 
   return (
-    <View className="w-full p-4  bg-light flex flex-row justify-between items-center">
+    <View className="w-full p-4  bg-[#104b41] flex flex-row justify-between items-center">
       <View>
         {/* <Feather name="menu" size={24} color="black" /> */}
-        <Text className="text-2xl font-bold text-black">{headerName}</Text>
+        <Text className="text-2xl font-bold text-white">{headerName}</Text>
       </View>
       <View className="flex flex-row">
         {/* <Ionicons
@@ -50,7 +50,7 @@ const HeaderComponent = () => {
         <MaterialIcons
           name="logout"
           size={24}
-          color="black"
+          color="white"
           className="mx-2"
           onPress={handleLogout}
         />

@@ -16,10 +16,10 @@ const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 export const authStore = create<AUTHSTORE>((set) => ({
   login: async (data: any) => {
     console.log("--Login Data : ", data);
-    console.log(`${apiUrl}/auth/login`);
+    console.log(`${apiUrl}/api/v1/auth/login`);
 
     try {
-      const res = await axios.post(`${apiUrl}/auth/login`, data, {
+      const res = await axios.post(`${apiUrl}/api/v1/auth/login`, data, {
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
@@ -72,7 +72,7 @@ export const authStore = create<AUTHSTORE>((set) => ({
   getUserRoles: async (data: any) => {
     console.log("getUserRoles,", data);
     try {
-      const res = await axiosHTTP.post(`${apiUrl}/auth/role`, data, {
+      const res = await axiosHTTP.post(`${apiUrl}/api/v1/auth/role`, data, {
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",

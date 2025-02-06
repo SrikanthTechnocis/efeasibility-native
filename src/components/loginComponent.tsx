@@ -41,11 +41,9 @@ const LoginComponent = () => {
       if (res) {
         AsyncStorage.setItem("appName", "efeasibility");
         AsyncStorage.setItem("basicauth", res.token);
-        console.log("✅ Token stored successfully:", res.token);
         AsyncStorage.setItem("user", JSON.stringify(res));
         getTokenLocalStorage();
-        router.push("/");
-
+        router.push("/select-role");
         setEmail("");
         setPassword("");
       }
