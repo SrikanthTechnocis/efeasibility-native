@@ -3,10 +3,10 @@ import AuthGuard from "../../guards/AuthGuard";
 import { Slot } from "expo-router";
 import HeaderComponent from "../../components/HeaderComponent";
 import { universalStore } from "../../store/universalStore";
-import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 // import { Drawer } from "expo-router/drawer";
 import { useState } from "react";
+import DashboardCompnent from "../../components/dashboardComponent";
 
 const DashboardLayout = () => {
   const Drawer = createDrawerNavigator();
