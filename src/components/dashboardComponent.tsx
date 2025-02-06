@@ -31,6 +31,8 @@ const DashboardCompnent = () => {
       if (questionnaires) {
         setAllQuestionnairess(questionnaires.data);
         loading = false;
+      } else {
+        loading = false;
       }
     });
   };
