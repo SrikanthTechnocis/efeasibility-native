@@ -8,7 +8,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 
 const HeaderComponent = () => {
-  const { headerName, fetchUniverseStore } = universalStore();
+  const { headerName, fetchUniverseStore, setHeaderName } = universalStore();
   const router = useRouter();
 
   const [modalVisible, setModalVisible] = useState(false);

@@ -47,7 +47,7 @@ const DashboardCompnent = () => {
       <View className="flex-1  bg-[#e2ded7] p-2">
         <Text className="font-bold text-2xl">All Questionnaires</Text>
         <Loader />
-        <StatusBar style="light" backgroundColor="#83103e" />
+        <StatusBar style="auto" />
       </View>
     );
   }

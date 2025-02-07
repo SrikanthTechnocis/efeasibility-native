@@ -136,7 +136,21 @@ const AllQuestionnairesTable = ({ data }: Probs) => {
                     style={{ flexShrink: 1 }}
                     className="w-40 p-1 ps-2"
                   >
-                    {item.questionnaireName}
+                    <Link
+                      className="text-blue-600"
+                      href={{
+                        pathname: "./questionnaire-details/[reportId]",
+                        params: {
+                          questionnaireId: item.questionnireId,
+                          reportId: item._id,
+                          resultId: item.questionnaireResultId,
+                          siteId: item.siteId,
+                        },
+                      }}
+                      relativeToDirectory
+                    >
+                      {item.questionnaireName}
+                    </Link>
                   </Text>
                 </DataTable.Cell>
 
@@ -148,15 +162,6 @@ const AllQuestionnairesTable = ({ data }: Probs) => {
                     style={{ flexShrink: 1 }}
                     className="w-32 p-1 ps-2"
                   >
-                    {/* <Link
-                      className="text-blue-600"
-                      href={{
-                        pathname: "./report-view/[reportId]",
-                        params: { reportId: item._id },
-                      }}
-                      relativeToDirectory
-                    >
-                    </Link> */}
                     {item.studyInfo?.study_title}
                   </Text>
                 </DataTable.Cell>
