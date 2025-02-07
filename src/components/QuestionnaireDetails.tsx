@@ -92,92 +92,104 @@ const QuestionnaireDetails = ({
 
         {/* Questionnaire Details */}
         <ScrollView className="flex-1 p-4">
+          <View className="flex-1 mb-2"></View>
           <Text className="font-bold text-2xl mb-4">Questionnaire Details</Text>
-          {/* Row 1 */}
-          <View className="mb-4">
-            <View className="flex-1 flex-row items-center w-[100vw]">
-              <Text className="font-bold text-lg w-[50%] text-start">
-                Questionnaire Name:
-              </Text>
-              <Text className="ml-2 text-lg w-[50%] text-end">
-                Questionnaire 1
-              </Text>
-            </View>
-            <View className="flex-1 flex-row items-center w-[100vw]">
-              <Text className="font-bold text-lg w-[50%] text-star">
-                Study:
-              </Text>
-              <Text className="ml-2 text-lg w-[50%] text-end">
-                Zincovit Study
-              </Text>
-            </View>
-          </View>
-          {/* Row 2 */}
-          <View className="justify-between mb-4">
-            <View className="flex-1 flex-row items-center w-[100vw]">
-              <Text className="font-bold text-lg w-[50%] text-start">
-                CDA Status:
-              </Text>
-              <Text className="ml-2 text-lg w-[50%] text-end">PI Signed</Text>
-            </View>
-            <View className="flex-1 flex-row items-center w-[100vw]">
-              <Text className="font-bold text-lg w-[50%] text-start">
-                Site:
-              </Text>
-              <Text className="ml-2 text-lg w-[50%] text-end">
-                Apollo Main Hospitals
-              </Text>
-            </View>
-          </View>
-          {/* Row 3 */}
-          <View className="justify-between mb-4">
-            <View className="flex-1 flex-row items-center w-[100vw]">
-              <Text className="font-bold text-lg w-[50%] text-start">
-                Contact name:
-              </Text>
-              <Text className="ml-2 text-lg w-[50%] text-end">
-                Eunice Ranjithkumar
-              </Text>
-            </View>
-            <View className="flex-1 flex-row items-center w-[100vw]">
-              <Text className="font-bold text-lg w-[50%] text-start">
-                Contact No:
-              </Text>
-              <Text className="ml-2 text-lg w-[50%] text-end">9705515710</Text>
-            </View>
-          </View>
-          {/* Row 4 */}
-          <View className="justify-between mb-4">
-            <View className="flex-1 flex-row items-center w-[100vw]">
-              <Text className="font-bold text-lg w-[50%] text-start">
-                Contact email:
-              </Text>
-              <Text className="ml-2 text-lg w-[50%] text-end">
-                eunice.ranjith@assaycr.com
-              </Text>
-            </View>
-            <View className="flex-1 flex-row items-center w-[100vw]">
-              <Text className="font-bold text-lg w-[50%] text-start">
-                Contact Designation:
-              </Text>
-              <Text className="ml-2 text-lg w-[50%] text-end">
-                Sr.Start-Up Specialist
-              </Text>
-            </View>
-          </View>
-          {/* Row 5 */}
-          <View className="justify-between mb-4">
-            <View className="flex-1 items-start">
-              <Text className="font-bold text-lg">Synopsis:</Text>
-              <Text className="ml-1 text-lg text-wrap">
-                A Decentralized, Randomized, Double-blind, Parallel,
-                Placebo-controlled trial to assess the effectiveness and impact
-                of ZINCOVIT-CD as a supportive care in adults with Chronic
-                Controlled Hypertension or Chronic Controlled Type II Diabetes
-                Mellitus or Both.
-              </Text>
-            </View>
-          </View>
+          {questionnaire ? (
+            <>
+              <View className="mb-4">
+                <View className="flex-1 flex-row items-center w-[100vw]">
+                  <Text className="font-bold text-lg w-[50%] text-start">
+                    Questionnaire Name:
+                  </Text>
+                  <Text className="ml-2 text-lg w-[50%] text-end">
+                    {questionnaire.questionnaireName
+                      ? questionnaire.questionnaireName
+                      : ""}
+                  </Text>
+                </View>
+                <View className="flex-1 flex-row items-center w-[100vw]">
+                  <Text className="font-bold text-lg w-[50%] text-star">
+                    Study:
+                  </Text>
+                  <Text className="ml-2 text-lg w-[50%] text-end">
+                    {questionnaire.studyInfo
+                      ? questionnaire.studyInfo?.study_acronym
+                      : ""}
+                  </Text>
+                </View>
+              </View>
+              <View className="justify-between mb-4">
+                <View className="flex-1 flex-row items-center w-[100vw]">
+                  <Text className="font-bold text-lg w-[50%] text-start">
+                    CDA Status:
+                  </Text>
+                  <Text className="ml-2 text-lg w-[50%] text-end">
+                    {questionnaire.CDA_FLAG ? "PI Signed" : "PI UnSigned"}
+                  </Text>
+                </View>
+                <View className="flex-1 flex-row items-center w-[100vw]">
+                  <Text className="font-bold text-lg w-[50%] text-start">
+                    Site:
+                  </Text>
+                  <Text className="ml-2 text-lg w-[50%] text-end">
+                    {questionnaire.siteInfo
+                      ? questionnaire.siteInfo?.site_name
+                      : ""}
+                  </Text>
+                </View>
+              </View>
+              <View className="justify-between mb-4">
+                <View className="flex-1 flex-row items-center w-[100vw]">
+                  <Text className="font-bold text-lg w-[50%] text-start">
+                    Contact name:
+                  </Text>
+                  <Text className="ml-2 text-lg w-[50%] text-end">
+                    {questionnaire.contactName ? questionnaire.contactName : ""}
+                  </Text>
+                </View>
+                <View className="flex-1 flex-row items-center w-[100vw]">
+                  <Text className="font-bold text-lg w-[50%] text-start">
+                    Contact No:
+                  </Text>
+                  <Text className="ml-2 text-lg w-[50%] text-end">
+                    {questionnaire.contactNo ? questionnaire.contactNo : ""}
+                  </Text>
+                </View>
+              </View>
+              <View className="justify-between mb-4">
+                <View className="flex-1 flex-row items-center w-[100vw]">
+                  <Text className="font-bold text-lg w-[50%] text-start">
+                    Contact email:
+                  </Text>
+                  <Text className="ml-2 text-lg w-[50%] text-end">
+                    {questionnaire.contactEmail
+                      ? questionnaire.contactEmail
+                      : ""}
+                  </Text>
+                </View>
+                <View className="flex-1 flex-row items-center w-[100vw]">
+                  <Text className="font-bold text-lg w-[50%] text-start">
+                    Contact Designation:
+                  </Text>
+                  <Text className="ml-2 text-lg w-[50%] text-end">
+                    {questionnaire.contactDesignation
+                      ? questionnaire.contactDesignation
+                      : ""}
+                  </Text>
+                </View>
+              </View>
+              <View className="justify-between mb-4">
+                <View className="flex-1 items-start">
+                  <Text className="font-bold text-lg">Synopsis:</Text>
+                  <Text className="ml-1 text-lg text-wrap">
+                    {questionnaire.synopsis ? questionnaire.synopsis : ""}
+                  </Text>
+                </View>
+              </View>
+            </>
+          ) : (
+            ""
+          )}
           {/* Secitons  */}
           <Text className="font-bold text-2xl mb-4">Sections</Text>
 
