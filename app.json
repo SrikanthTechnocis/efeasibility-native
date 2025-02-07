@@ -20,12 +20,23 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/star-logo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.srikanthjeeva24.efeasibilitynative"
     },
     "web": {
       "favicon": "./src/assets/images/star-logo.png",
       "bundler": "metro"
     },
-    "plugins": ["expo-router"]
+    "plugins": [
+      "expo-router"
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "035f085b-e434-4b8f-8cec-cc1cf2a7286b"
+      }
+    }
   }
 }

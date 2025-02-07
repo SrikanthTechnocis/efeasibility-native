@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Button, Pressable } from "react-native";
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { authStore } from "../store/authStore";
@@ -8,16 +8,18 @@ import Loader from "./ui/Loader";
 import { universalStore } from "../store/universalStore";
 import { format } from "date-fns";
 
-const QuestionnaireDetails = ({
-  questionnaireId,
-  reportId,
-  resultId,
-  siteId,
-}: {
+interface QuestionnaireDetailsProps {
   questionnaireId: any;
   reportId: any;
   resultId: any;
   siteId: any;
+}
+
+const QuestionnaireDetails: React.FC<QuestionnaireDetailsProps> = ({
+  questionnaireId,
+  reportId,
+  resultId,
+  siteId,
 }) => {
   const [user, setUser] = useState<any>();
   const [questionnaire, setQuestionnaire] = useState<any>();
@@ -37,17 +39,37 @@ const QuestionnaireDetails = ({
   const initData = async () => {
     setHeaderName("Questionnaire");
     const userData = await getUserFromLocalStorage();
-    setUser(JSON.parse(userData));
+    if (userData) {
+      setUser(JSON.parse(userData));
+      getQuestionnaire(
+        questionnaireId,
+        reportId,
+        resultId,
+        siteId,
+        user["id"],
+        user["profileId"]
+      );
+    }
+  };
 
-    fetchQuestionnaireById(
+  const getQuestionnaire = async (
+    questionnaireId: any,
+    reportId: any,
+    resultId: any,
+    siteId: any,
+    userId: any,
+    profileId: any
+  ) => {
+    const questionData = await fetchQuestionnaireById(
       questionnaireId,
       siteId,
       resultId,
       user["id"],
       user["profileId"]
-    ).then((que: any) => {
-      setQuestionnaire(que.data);
-    });
+    );
+    if (questionData) {
+      setQuestionnaire(questionData.data);
+    }
   };
 
   useEffect(() => {
@@ -58,17 +80,15 @@ const QuestionnaireDetails = ({
     return (
       <View className="flex-1 px-2 pt-3">
         <View className="flex flex-row items-center justify-end w-full">
-          {/* <Text className="font-bold text-2xl">Report View </Text> */}
-          <MaterialCommunityIcons
-            name="backburger"
-            size={26}
-            color="black"
+          <Pressable
+            className="mx-2 my-1 p-3 rounded bg-blue-600"
             onPress={() => {
               router.back();
             }}
-          />
+          >
+            <Text className="text-center text-white font-semibold">Back</Text>
+          </Pressable>
         </View>
-        {/* <View className="mt-2 border border-black/50"></View> */}
         <Loader />
         <StatusBar style="auto" />
       </View>
@@ -78,20 +98,18 @@ const QuestionnaireDetails = ({
     <>
       <View className="flex-1 w-[100vw]">
         <View className="flex flex-row items-center justify-end">
-          {/* <Text className="font-bold text-2xl">Report View </Text> */}
-          <MaterialCommunityIcons
-            name="backburger"
-            size={24}
-            color="black"
+          <Pressable
+            className="mx-2 my-1 p-3 rounded bg-blue-600"
             onPress={() => {
               router.back();
             }}
-          />
+          >
+            <Text className="text-center text-white font-semibold">Back</Text>
+          </Pressable>
         </View>
-        <View className="mt-2 border border-black/50"></View>
 
         {/* Questionnaire Details */}
-        <ScrollView className="flex-1 p-4">
+        <ScrollView className="flex-1 p-4 bg-light">
           <View className="flex-1 mb-2"></View>
           <Text className="font-bold text-2xl mb-4">Questionnaire Details</Text>
           {questionnaire ? (
@@ -202,7 +220,7 @@ const QuestionnaireDetails = ({
               <Text className="font-bold text-xl mb-2">
                 {section.sectionInfo.name}
               </Text>
-              <View className="text-center">
+              <View className="text-center max-w-screen-sm overflow-x-auo">
                 <Text className="mb-4">{section.sectionInfo.instruction}</Text>
                 {section.sectionInfo.fields.map(
                   (field: any, fieldIndex: any) => (
@@ -210,7 +228,9 @@ const QuestionnaireDetails = ({
                       key={`${field.key}-${fieldIndex}`}
                       className="flex-1 mb-2"
                     >
-                      <Text className="font-bold mb-1">{field.label}</Text>
+                      <Text className="font-bold mb-1 text-wrap">
+                        {field.label}
+                      </Text>
                       {/* Date Value */}
                       {field.controlType === "datepicker" ? (
                         <Text className="mx-2">
@@ -232,9 +252,9 @@ const QuestionnaireDetails = ({
                                 (yesQ: any, yesIndex: any) => (
                                   <View
                                     key={`${yesQ.label} - ${yesIndex}`}
-                                    className="flex-1 my-2 ml-3"
+                                    className="flex-1 my-2"
                                   >
-                                    <Text className="font-bold mb-1">
+                                    <Text className="font-bold mb-1 text-wrap max-w-[90vw]">
                                       {yesQ.label}
                                     </Text>
                                     {yesQ.controlType == "datepicker" ? (
@@ -261,9 +281,9 @@ const QuestionnaireDetails = ({
                                 (noQ: any, noIndex: any) => (
                                   <View
                                     key={`${noQ.label} - ${noIndex}`}
-                                    className="flex-1 my-2 ml-3"
+                                    className="flex-1 my-2"
                                   >
-                                    <Text className="font-bold mb-1">
+                                    <Text className="font-bold mb-1 text-wrap max-w-[90vw]">
                                       {noQ.label}
                                     </Text>
                                     {noQ.controlType == "datepicker" ? (
