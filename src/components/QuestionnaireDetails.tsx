@@ -36,23 +36,30 @@ const QuestionnaireDetails: React.FC<QuestionnaireDetailsProps> = ({
     return "";
   };
 
-  const initData = async () => {
+  const initData = () => {
     setHeaderName("Questionnaire");
-    const userData = await getUserFromLocalStorage();
-    if (userData) {
-      setUser(JSON.parse(userData));
-      getQuestionnaire(
-        questionnaireId,
-        reportId,
-        resultId,
-        siteId,
-        user["id"],
-        user["profileId"]
-      );
-    }
+    getUserFromLocalStorage()
+      .then((userData: any) => {
+        if (userData) {
+          let user = JSON.parse(userData);
+          setUser(user);
+          console.log("-Questinnaire-user", userData);
+          getQuestionnaire(
+            questionnaireId,
+            reportId,
+            resultId,
+            siteId,
+            user["id"],
+            user["profileId"]
+          );
+        }
+      })
+      .catch((error: any) => {
+        console.error("Error fetching user data", error);
+      });
   };
 
-  const getQuestionnaire = async (
+  const getQuestionnaire = (
     questionnaireId: any,
     reportId: any,
     resultId: any,
@@ -60,16 +67,23 @@ const QuestionnaireDetails: React.FC<QuestionnaireDetailsProps> = ({
     userId: any,
     profileId: any
   ) => {
-    const questionData = await fetchQuestionnaireById(
+    console.log("Question By Id Called");
+    fetchQuestionnaireById(
       questionnaireId,
       siteId,
       resultId,
       user["id"],
       user["profileId"]
-    );
-    if (questionData) {
-      setQuestionnaire(questionData.data);
-    }
+    )
+      .then((res: any) => {
+        if (res) {
+          setQuestionnaire(res.data);
+          console.log("--Questionnaire:--");
+        }
+      })
+      .catch((error: any) => {
+        console.error("Error fetching question details", error);
+      });
   };
 
   useEffect(() => {

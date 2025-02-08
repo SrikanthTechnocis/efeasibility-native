@@ -27,14 +27,19 @@ const DashboardCompnent = () => {
 
   // Get All Questionnaires
   const getAllQuestionnaires = (userId: any) => {
-    fetchQuestionnaires(userId).then((questionnaires: any) => {
-      if (questionnaires) {
-        setAllQuestionnairess(questionnaires.data);
-        loading = false;
-      } else {
-        loading = false;
-      }
-    });
+    console.log("All Questionnaire Called");
+    fetchQuestionnaires(userId)
+      .then((questionnaires: any) => {
+        if (questionnaires) {
+          setAllQuestionnairess(questionnaires.data);
+          loading = false;
+        } else {
+          loading = false;
+        }
+      })
+      .catch((error: any) => {
+        console.error("Error fetching All Questions", error);
+      });
   };
 
   useEffect(() => {
