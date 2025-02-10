@@ -16,13 +16,20 @@ const DashboardCompnent = () => {
 
   const getDatas = () => {
     loading = true;
-    getUserFromLocalStorage().then((res: any) => {
-      if (res) {
-        let user = JSON.parse(res);
-        setUser(user);
-        getAllQuestionnaires(user["id"]);
-      }
-    });
+    getUserFromLocalStorage()
+      .then((res: any) => {
+        if (res) {
+          let user: any = JSON.parse(res);
+          setUser(user);
+          console.log("user", user);
+          if (user) {
+            getAllQuestionnaires(user["id"]);
+          }
+        }
+      })
+      .catch((error: any) => {
+        console.error("Error fetching user", error);
+      });
   };
 
   // Get All Questionnaires

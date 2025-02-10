@@ -7,6 +7,8 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Loader from "./ui/Loader";
 import { universalStore } from "../store/universalStore";
 import { format } from "date-fns";
+import WebView from "react-native-webview";
+import { Vimeo } from "react-native-vimeo-iframe";
 
 interface QuestionnaireDetailsProps {
   questionnaireId: any;
@@ -41,17 +43,12 @@ const QuestionnaireDetails: React.FC<QuestionnaireDetailsProps> = ({
     getUserFromLocalStorage()
       .then((userData: any) => {
         if (userData) {
-          let user = JSON.parse(userData);
-          setUser(user);
-          console.log("-Questinnaire-user", userData);
-          getQuestionnaire(
-            questionnaireId,
-            reportId,
-            resultId,
-            siteId,
-            user["id"],
-            user["profileId"]
-          );
+          let formattedUser: any = JSON.parse(userData);
+          setUser(formattedUser);
+          console.log("-Questinnaire-user", formattedUser);
+          if (formattedUser) {
+            getQuestionnaire(questionnaireId, resultId, siteId, formattedUser);
+          }
         }
       })
       .catch((error: any) => {
@@ -61,11 +58,9 @@ const QuestionnaireDetails: React.FC<QuestionnaireDetailsProps> = ({
 
   const getQuestionnaire = (
     questionnaireId: any,
-    reportId: any,
     resultId: any,
     siteId: any,
-    userId: any,
-    profileId: any
+    user: any
   ) => {
     console.log("Question By Id Called");
     fetchQuestionnaireById(
@@ -90,6 +85,21 @@ const QuestionnaireDetails: React.FC<QuestionnaireDetailsProps> = ({
     initData();
   }, []);
 
+  const getVimeoVideoId = (url: string): string | null => {
+    const match = url.match(/vimeo\.com\/(\d+)/);
+    console.log("vimeoId", match ? match[1] : null);
+    return match ? match[1].toString() : null;
+  };
+
+  const videoCallbacks = {
+    timeupdate: (data: any) => console.log("timeupdate: ", data),
+    play: (data: any) => console.log("play: ", data),
+    pause: (data: any) => console.log("pause: ", data),
+    fullscreenchange: (data: any) => console.log("fullscreenchange: ", data),
+    ended: (data: any) => console.log("ended: ", data),
+    controlschange: (data: any) => console.log("controlschange: ", data),
+  };
+
   if (!user || !questionnaire) {
     return (
       <View className="flex-1 px-2 pt-3">
@@ -108,6 +118,7 @@ const QuestionnaireDetails: React.FC<QuestionnaireDetailsProps> = ({
       </View>
     );
   }
+
   return (
     <>
       <View className="flex-1 w-[100vw]">
@@ -124,7 +135,15 @@ const QuestionnaireDetails: React.FC<QuestionnaireDetailsProps> = ({
 
         {/* Questionnaire Details */}
         <ScrollView className="flex-1 p-4 bg-light">
-          <View className="flex-1 mb-2"></View>
+          <View className="flex-1 mb-2 z-auto">
+            <Vimeo
+              videoId={getVimeoVideoId(questionnaire?.fileUrl) || ""}
+              params={"api=1&autoplay=0"}
+              handlers={videoCallbacks}
+              style={{ width: "100%", height: 300 }}
+            />
+          </View>
+
           <Text className="font-bold text-2xl mb-4">Questionnaire Details</Text>
           {questionnaire ? (
             <>
