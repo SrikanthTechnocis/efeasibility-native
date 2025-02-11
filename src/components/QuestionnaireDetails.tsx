@@ -1,15 +1,14 @@
-import { View, Text, ScrollView, Button, Pressable } from "react-native";
+import { View, Text, ScrollView, Button, Pressable, Alert } from "react-native";
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { authStore } from "../store/authStore";
 import { useRouter } from "expo-router";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Loader from "./ui/Loader";
 import { universalStore } from "../store/universalStore";
 import { format } from "date-fns";
-import WebView from "react-native-webview";
 import { Vimeo } from "react-native-vimeo-iframe";
-
+import RNFS from "react-native-fs";
 interface QuestionnaireDetailsProps {
   questionnaireId: any;
   reportId: any;
@@ -24,9 +23,11 @@ const QuestionnaireDetails: React.FC<QuestionnaireDetailsProps> = ({
   siteId,
 }) => {
   const [user, setUser] = useState<any>();
+  const [Loading, setLoading] = useState<boolean>(false);
   const [questionnaire, setQuestionnaire] = useState<any>();
   const { getUserFromLocalStorage } = authStore();
-  const { setHeaderName, fetchQuestionnaireById } = universalStore();
+  const { setHeaderName, fetchQuestionnaireById, fetchSecureSignedUrl } =
+    universalStore();
   const router = useRouter();
 
   const getLabel = (key: any, section: any) => {
@@ -78,6 +79,42 @@ const QuestionnaireDetails: React.FC<QuestionnaireDetailsProps> = ({
       })
       .catch((error: any) => {
         console.error("Error fetching question details", error);
+      });
+  };
+
+  const fetchSecureUrl = (fileName: string, Url: string) => {
+    setLoading(true);
+    // fetch secureUrl
+    let pathname = new URL(Url).pathname.replace(/^\/+/, "");
+    fetchSecureSignedUrl({ fileUrl: pathname })
+      .then(async (res: any) => {
+        console.log("secureUrl:", res.data.url);
+
+        // const localFile = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+        // console.log("localfile", localFile);
+        // try {
+        //   const result = await RNFS.downloadFile({
+        //     fromUrl: res.data.url,
+        //     toFile: localFile,
+        //   }).promise;
+        //   console.log("result", result);
+        //   if (result.statusCode === 200) {
+        //     Alert.alert("Download complete", `File saved to: ${localFile}`);
+        //   } else {
+        //     Alert.alert(
+        //       "Download failed",
+        //       "Something went wrong while downloading"
+        //     );
+        //   }
+        // } catch (error) {
+        //   Alert.alert("Error", "An error occurred during download");
+        // } finally {
+        //   setLoading(false);
+        // }
+      })
+      .catch((error: any) => {
+        Alert.alert("Error", "An error occurred while fetching secure URL");
+        setLoading(false);
       });
   };
 
@@ -135,7 +172,7 @@ const QuestionnaireDetails: React.FC<QuestionnaireDetailsProps> = ({
 
         {/* Questionnaire Details */}
         <ScrollView className="flex-1 p-4 bg-light">
-          <View className="flex-1 mb-2 z-auto">
+          <View className="flex-1 mb-2">
             <Vimeo
               videoId={getVimeoVideoId(questionnaire?.fileUrl) || ""}
               params={"api=1&autoplay=0"}
@@ -143,7 +180,84 @@ const QuestionnaireDetails: React.FC<QuestionnaireDetailsProps> = ({
               style={{ width: "100%", height: 300 }}
             />
           </View>
-
+          {/* <View className="flex-1 mb-2 shadow bg-white rounded-lg p-4 overflow-hidden">
+            <ScrollView className="flex-1 p-4 bg-light max-h-[12rem]">
+              {questionnaire.synopsisUrl ? (
+                <Pressable
+                  onPress={() =>
+                    fetchSecureUrl(
+                      questionnaire.synopsisName,
+                      questionnaire.synopsisUrl
+                    )
+                  }
+                >
+                  <View
+                    key={`pdf-${questionnaire.synopsisName}`}
+                    className="flex flex-row items-center mb-4 overflow-x-hidden"
+                  >
+                    <FontAwesome6 name="file-pdf" size={24} color="red" />
+                    <Text className="ml-2 text-lg text-wrap">
+                      {questionnaire.synopsisName}
+                    </Text>
+                  </View>
+                </Pressable>
+              ) : (
+                ""
+              )}
+              {questionnaire.document1Name ? (
+                <View
+                  key={`pdf-${questionnaire.document1Name}`}
+                  className="flex flex-row items-center mb-4 overflow-x-hidden"
+                >
+                  <FontAwesome6 name="file-pdf" size={24} color="red" />
+                  <Text className="ml-2 text-lg text-wrap">
+                    {questionnaire.document1Name}
+                  </Text>
+                </View>
+              ) : (
+                ""
+              )}
+              {questionnaire.document2Name ? (
+                <View
+                  key={`pdf-${questionnaire.document2Name}`}
+                  className="flex flex-row items-center mb-4 overflow-x-hidden"
+                >
+                  <FontAwesome6 name="file-pdf" size={24} color="red" />
+                  <Text className="ml-2 text-lg text-wrap">
+                    {questionnaire.document2Name}
+                  </Text>
+                </View>
+              ) : (
+                ""
+              )}
+              {questionnaire.document3Name ? (
+                <View
+                  key={`pdf-${questionnaire.document3Name}`}
+                  className="flex flex-row items-center mb-4 overflow-x-hidden"
+                >
+                  <FontAwesome6 name="file-pdf" size={24} color="red" />
+                  <Text className="ml-2 text-lg text-wrap">
+                    {questionnaire.document3Name}
+                  </Text>
+                </View>
+              ) : (
+                ""
+              )}
+              {questionnaire.document4Name ? (
+                <View
+                  key={`pdf-${questionnaire.document4Name}`}
+                  className="flex flex-row items-center mb-4 overflow-x-hidden"
+                >
+                  <FontAwesome6 name="file-pdf" size={24} color="red" />
+                  <Text className="ml-2 text-lg text-wrap">
+                    {questionnaire.document4Name}
+                  </Text>
+                </View>
+              ) : (
+                ""
+              )}
+            </ScrollView>
+          </View> */}
           <Text className="font-bold text-2xl mb-4">Questionnaire Details</Text>
           {questionnaire ? (
             <>
